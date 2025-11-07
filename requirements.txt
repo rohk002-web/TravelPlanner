@@ -1,0 +1,9 @@
+fastapi==0.111.0
+uvicorn[standard]==0.23.1
+SQLAlchemy[asyncio]==2.0.22
+asyncpg==0.30.0
+python-dotenv==1.0.1
+passlib
+passlib[bcrypt]
+argon2-cffi
+
