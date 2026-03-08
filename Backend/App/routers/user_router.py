@@ -7,7 +7,7 @@ from App.config.services import create_user_service, login_user as login_user_se
 from fastapi import Depends
 from fastapi import APIRouter, Header
 
-router =APIRouter()
+router =APIRouter(tags=["User Management"])
 
 @router.post("/create-users",response_model=UserSchema)
 async def create_user(user:CreateUser,db:Session = Depends(get_db)):
