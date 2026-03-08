@@ -12,6 +12,7 @@ class User(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String, nullable=True)
     email_id = Column(String, unique=True, nullable=False)
+    api_tokens = Column(String, unique=True, nullable=True) 
     password = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)

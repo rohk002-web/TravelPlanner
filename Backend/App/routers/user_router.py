@@ -1,12 +1,11 @@
-from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 from App.Model.user import User 
 from App.schema.user_schema import UserSchema, CreateUser, LoginUser , Message, ListUser
 from sqlalchemy.orm import Session
 from App.config.db_connection import get_db
-from App.config.services import create_user_service, login_user as login_user_service , list_users
+from App.config.services import create_user_service, login_user as login_user_service , list_users , signout_user
 from fastapi import Depends
-from fastapi import APIRouter
+from fastapi import APIRouter, Header
 
 router =APIRouter()
 
@@ -22,3 +21,7 @@ async def login_user(user:LoginUser,db:Session = Depends(get_db)):
 async def list_all_users(db: Session = Depends(get_db)):
     return list_users(db)
 
+@router.post("/logout")
+def logout(authorization: str = Header(...), db: Session = Depends(get_db)):
+    token = authorization
+    return signout_user(token, db)

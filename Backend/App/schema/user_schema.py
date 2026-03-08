@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 from App.Model.user import User
 from uuid import UUID
+from datetime import datetime
 
 class UserSchema(BaseModel):
     id: UUID
@@ -26,6 +27,8 @@ class ErrorResponse(BaseModel):
 
 class Message(BaseModel):
     message:str
+    token: str
+    expires_at: datetime
 
     class Config:
         orm_mode = True
