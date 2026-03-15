@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import LoginPage from "./pages/login";
 import CreateUserPage from "./pages/create-user";
+import ItineraryPage from "./pages/Itinerary";
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
               <span className="text-base sm:text-lg">Travel Planner</span>
             </Link>
 
-            <nav className="flex items-center gap-2">
+            {/* <nav className="flex items-center gap-2">
               <Link
                 to="/login"
                 className="rounded-xl px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
@@ -28,7 +29,7 @@ const App = () => {
               >
                 Create Account
               </Link>
-            </nav>
+            </nav> */}
           </div>
         </header>
 
@@ -36,6 +37,7 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/create-user" element={<CreateUserPage />} />
+            <Route path="/Itinerary" element={<ItineraryPage />} />
             <Route
               path="*"
               element={
