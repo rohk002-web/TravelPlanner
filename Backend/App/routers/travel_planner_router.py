@@ -1,11 +1,11 @@
 from fastapi import APIRouter
 from App.schema.llm_response_schema import TravelRequest, TravelResponse
 from App.Agent.travel_agent import generate_travel_plan
-from App.config.authentication_service import get_current_user
+from App.service.authentication_service import get_current_user
 from fastapi import Depends , HTTPException
 from App.schema.itineraries_scehma import ItinerarySchema, ItineraryResponse
 from App.config.db_connection import get_db
-from App.config.itineraries_service import save_itinerary_data
+from App.service.itineraries_service import save_itinerary_data
 from App.Model.Itineraries import Itinerary
 from sqlalchemy.orm import Session
 from fastapi.responses import StreamingResponse

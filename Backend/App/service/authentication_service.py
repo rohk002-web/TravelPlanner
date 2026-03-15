@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from App.config.db_connection import get_db
 from sqlalchemy.orm import Session
 from App.Model.user import User
-from App.config.services import hash_token
+from .login_services import hash_token
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login-user")  # endpoint that returns token
 

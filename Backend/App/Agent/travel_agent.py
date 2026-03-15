@@ -6,10 +6,9 @@ from App.Agent.prompt import TRAVEL_AGENT_PROMPT
 
 load_dotenv()
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-
 
 async def generate_travel_plan(data):
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
     prompt = TRAVEL_AGENT_PROMPT.format(
         destination=data.destination,

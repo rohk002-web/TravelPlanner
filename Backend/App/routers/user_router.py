@@ -3,7 +3,7 @@ from App.Model.user import User
 from App.schema.user_schema import UserSchema, CreateUser, LoginUser , Message, ListUser
 from sqlalchemy.orm import Session
 from App.config.db_connection import get_db
-from App.config.services import create_user_service, login_user as login_user_service , list_users , signout_user
+from App.service.login_services import create_user_service, login_user as login_user_service , list_users , signout_user
 from fastapi import Depends
 from fastapi import APIRouter, Header
 
