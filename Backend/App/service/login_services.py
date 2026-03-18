@@ -4,10 +4,13 @@ from passlib.context import CryptContext
 from App.Model.user import User
 import uuid
 from fastapi import HTTPException, status
-import secrets
-import hashlib
+import jwt
+import os
+from dotenv import load_dotenv
 
-pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")  # Ensure argon2_cffi installed
+load_dotenv()
+
+pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")  
 def create_user_service(user_data, db: Session):
     existing_user = db.query(User).filter(User.email_id == user_data.email_id).first()
     if existing_user:
@@ -35,9 +38,24 @@ def create_user_service(user_data, db: Session):
         "email_id": new_user.email_id
     }
 
-def hash_token(token: str):
-    return hashlib.sha256(token.encode()).hexdigest()
 
+# Password hashing context
+pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
+
+SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+
+# Function to create JWT
+def create_jwt_token(user_id: int, email: str, token_expire_hours=24):
+    expiration = datetime.utcnow() + timedelta(hours=token_expire_hours)
+    payload = {
+        "user_id": str(user_id),
+        "email": email,
+        "exp": expiration
+    }
+    token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+    return token, expiration
+
+# Login function
 def login_user(user_data, db: Session, token_expire_hours=24):
     user = db.query(User).filter(User.email_id == user_data.email_id).first()
     if not user:
@@ -52,37 +70,14 @@ def login_user(user_data, db: Session, token_expire_hours=24):
             detail="Invalid password"
         )
 
-    # Generate token and hash it
-    raw_token = secrets.token_hex(32)  # 64-character token
-    hashed_token = hash_token(raw_token)
+    # Generate JWT token
+    token, expires_at = create_jwt_token(user.id, user.email_id, token_expire_hours)
 
-    # Save hashed token in DB
-    user.api_tokens = hashed_token
-    db.commit()
-
-    # Return raw token to client
-    expires_at = datetime.utcnow() + timedelta(hours=token_expire_hours)
-    return {"message": "Login successful", "token": raw_token, "expires_at": expires_at}
-
-def signout_user(token: str, db: Session):
-    # hash the incoming token
-    hashed_token = hash_token(token)
-
-    # find user with this token
-    user = db.query(User).filter(User.api_tokens == hashed_token).first()
-
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token"
-        )
-
-    # remove token from DB
-    user.api_tokens = None
-    db.commit()
-
+    # Return JWT to client
     return {
-        "message": "Successfully logged out"
+        "message": "Login successful",
+        "token": token,
+        "expires_at": expires_at
     }
 
 
