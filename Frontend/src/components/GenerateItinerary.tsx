@@ -3,10 +3,10 @@ import React from "react";
 type ItineraryInput = {
   destination: string;
   travel_style: string;
-  no_of_persons: number;
-  days: number;
-  budget_min: number;
-  budget_max: number;
+  no_of_persons: string;
+  days: string;
+  budget_min: string;
+  budget_max: string;
 };
 
 type GenerateItineraryProps = {

@@ -27,8 +27,12 @@ class ErrorResponse(BaseModel):
 
 class Message(BaseModel):
     message:str
+    user_id: str
     token: str
     expires_at: datetime
+
+class SignoutMessage(BaseModel):
+    message: str
 
     class Config:
         orm_mode = True

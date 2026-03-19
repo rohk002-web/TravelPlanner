@@ -6,10 +6,10 @@ const ItineraryPage = () => {
   const [input, setInput] = useState({
     destination: "",
     travel_style: "",
-    no_of_persons: 1,
-    days: 1,
-    budget_min: 0,
-    budget_max: 0,
+    no_of_persons: "",
+    days: "",
+    budget_min: "",
+    budget_max: "",
   });
 
   const [loading, setLoading] = useState(false);

@@ -4,11 +4,8 @@ from passlib.context import CryptContext
 from App.Model.user import User
 import uuid
 from fastapi import HTTPException, status
-import jwt
-import os
-from dotenv import load_dotenv
+from App.service.authentication_service import create_jwt_token
 
-load_dotenv()
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")  
 def create_user_service(user_data, db: Session):
@@ -39,21 +36,6 @@ def create_user_service(user_data, db: Session):
     }
 
 
-# Password hashing context
-pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
-
-SECRET_KEY = os.getenv("JWT_SECRET_KEY")
-
-# Function to create JWT
-def create_jwt_token(user_id: int, email: str, token_expire_hours=24):
-    expiration = datetime.utcnow() + timedelta(hours=token_expire_hours)
-    payload = {
-        "user_id": str(user_id),
-        "email": email,
-        "exp": expiration
-    }
-    token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-    return token, expiration
 
 # Login function
 def login_user(user_data, db: Session, token_expire_hours=24):
@@ -76,6 +58,7 @@ def login_user(user_data, db: Session, token_expire_hours=24):
     # Return JWT to client
     return {
         "message": "Login successful",
+        "user_id": str(user.id),
         "token": token,
         "expires_at": expires_at
     }
