@@ -1,11 +1,10 @@
-from fastapi.responses import JSONResponse
 from App.Model.user import User 
 from App.schema.user_schema import UserSchema, CreateUser, LoginUser , Message, ListUser , SignoutMessage
 from sqlalchemy.orm import Session
 from App.config.db_connection import get_db
 from App.service.login_services import create_user_service, login_user as login_user_service , list_users
 from fastapi import Depends
-from fastapi import APIRouter, Header
+from fastapi import APIRouter
 from App.service.authentication_service import get_current_user
 
 router =APIRouter(tags=["User Management"])

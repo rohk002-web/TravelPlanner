@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from typing import Optional
-from App.Model.user import User
 from uuid import UUID
 from datetime import datetime
 

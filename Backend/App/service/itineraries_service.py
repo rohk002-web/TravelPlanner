@@ -7,7 +7,7 @@ from App.Model.user import User
 from App.service.authentication_service import get_current_user
 from fastapi import Depends
 
-def get_itnerary_by_id(db: Session, itinerary_id: str, user: User):
+def get_itinerary_by_id(db: Session, itinerary_id: str, user: User):
     itinerary = db.query(Itinerary).filter(
         Itinerary.id == itinerary_id,
         Itinerary.user_id == user.id
@@ -42,9 +42,9 @@ def save_itinerary_data(db: Session, itinerary_json: dict, current_user: User = 
             detail="Failed to save itinerary due to a database integrity error."
         )
     
-def update_itnerary_data(db: Session, itnerary_id: str, itinerary_json: dict) -> dict:
+def update_itinerary_data(db: Session, itinerary_id: str, itinerary_json: dict, user: User) -> dict:
 
-    itinerary = db.query(Itinerary).filter(Itinerary.id == itnerary_id).first()
+    itinerary = db.query(Itinerary).filter(Itinerary.id == itinerary_id, Itinerary.user_id == user.id).first()
     if not itinerary:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
