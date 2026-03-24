@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AuthSidePanel from "../components/AuthSidePanel";
 import CreateUserForm from "../components/CreateUserForm";
+import{toast} from "react-hot-toast";
 
 type CreateUserInput = {
   email_id: string;
@@ -25,15 +26,15 @@ const CreateUserPage = () => {
 
       if (res.ok) {
         const created = await res.json();
-        setMessage(`User ${created.name} created successfully!`);
+        toast.success(`User ${created.name} created successfully!`);
         return true;
       }
 
       const err = await res.json();
-      setMessage(err.detail || "Something went wrong!");
+      toast.error(err.detail || "Something went wrong!");
       return false;
     } catch {
-      setMessage("Network error!");
+      toast.error("Network error!");
       return false;
     } finally {
       setLoading(false);

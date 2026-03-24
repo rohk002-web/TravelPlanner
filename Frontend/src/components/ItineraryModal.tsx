@@ -3,6 +3,7 @@ import React, { useEffect, useMemo } from "react";
 type ItineraryModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  onSave?: (data: any) => void; 
   data: any;
 };
 
@@ -97,7 +98,7 @@ const SectionCard = ({ title, content }: { title: string; content?: string }) =>
   );
 };
 
-const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, data }) => {
+const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, onSave,data }) => {
   if (!isOpen) return null;
 
   useEffect(() => {
@@ -128,21 +129,32 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose, data }
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-semibold tracking-tight">Your itinerary</h2>
-            <p className="mt-1 text-sm text-slate-300">
-              {place ? toTitleCase(String(place)) : "Trip"}
-              {travelStyle ? ` • ${toTitleCase(String(travelStyle))}` : ""}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-400/40"
-          >
-            Close
-          </button>
-        </div>
+      <div>
+        <h2 className="text-xl font-semibold tracking-tight">Your itinerary</h2>
+        <p className="mt-1 text-sm text-slate-300">
+          {place ? toTitleCase(String(place)) : "Trip"}
+          {travelStyle ? ` • ${toTitleCase(String(travelStyle))}` : ""}
+        </p>
+      </div>
+
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => onSave?.(data)}
+          className="rounded-2xl bg-emerald-500 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-600"
+        >
+          Save
+        </button>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white hover:bg-white/10"
+        >
+          Close
+        </button>
+      </div>
+    </div>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           <InfoChip label="Destination" value={place ? toTitleCase(String(place)) : undefined} />

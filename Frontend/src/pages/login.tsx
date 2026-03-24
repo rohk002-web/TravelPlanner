@@ -1,6 +1,8 @@
 import { useState } from "react";
 import AuthSidePanel from "../components/AuthSidePanel";
 import LoginUserForm from "../components/LoginForm";
+import { useNavigate } from "react-router-dom";
+import  { toast } from "react-hot-toast";
 
 type LoginUserInput = {
   email_id: string;
@@ -10,6 +12,7 @@ type LoginUserInput = {
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleLogin = async (data: LoginUserInput) => {
     setLoading(true);
@@ -23,14 +26,22 @@ const LoginPage = () => {
       });
 
       if (res.ok) {
-        setMessage("Login successful!");
+        const payload = await res.json();
+        if (payload?.token) {
+          localStorage.setItem("token", payload.token);
+        }
+        if (payload?.user_id) {
+          localStorage.setItem("user_id", payload.user_id);
+        }
+        toast.success(payload?.message || "Logged in successfully!");
+        navigate("/itinerary");
         return;
       }
 
       const err = await res.json();
-      setMessage(err.detail || "Invalid credentials");
+      toast.error(err.detail || "Invalid credentials");
     } catch {
-      setMessage("Network error!");
+      toast.error("Network error!");
     } finally {
       setLoading(false);
     }

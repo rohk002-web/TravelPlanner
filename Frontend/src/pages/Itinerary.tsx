@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import GenerateItinerary from "../components/GenerateItinerary";
 import ItineraryModal from "../components/ItineraryModal";
+import { saveItinerary } from "../api/userapi";
+import toast from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
+
+
 
 const ItineraryPage = () => {
+
+  const navigate = useNavigate();
+
   const [input, setInput] = useState({
     destination: "",
     travel_style: "",
@@ -11,6 +19,33 @@ const ItineraryPage = () => {
     budget_min: "",
     budget_max: "",
   });
+
+const handleSave = async (data: any) => {
+  try {
+    const response = await saveItinerary(data); 
+    toast.success(response.message);
+      setTimeout(() => {
+      setModalOpen(false);
+    }, 1000);
+    
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to save itinerary");
+  }
+
+};
+
+const handleLogout = () => {
+  // Remove token and userId from localStorage
+  localStorage.removeItem("token");
+  localStorage.removeItem("user_id");
+
+  // Show toast for 2 seconds and then redirect
+  toast.success("Logged out successfully", { duration: 2000 });
+  setTimeout(() => {
+    navigate("/login");
+},2000);
+};
 
   const [loading, setLoading] = useState(false);
   const [itinerary, setItinerary] = useState<any>(null);
@@ -29,11 +64,15 @@ const ItineraryPage = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem("token"); 
       const response = await fetch("/travel-plan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
-      });
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, 
+      },
+      body: JSON.stringify(input),
+    });
       const data = await response.json();
       setItinerary(data.itinerary);
       setModalOpen(true);
@@ -46,6 +85,13 @@ const ItineraryPage = () => {
 
   return (
     <div>
+      <div style={{ display: "flex", justifyContent: "flex-end", padding: "1rem" }}>
+        <button onClick={handleLogout} style={{ cursor: "pointer" }}>
+          Logout
+        </button>
+      </div>
+
+    <div>
       <GenerateItinerary
         input={input}
         onChange={handleChange}
@@ -56,8 +102,10 @@ const ItineraryPage = () => {
       <ItineraryModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
+        onSave={handleSave}
         data={itinerary}
       />
+    </div>
     </div>
   );
 };

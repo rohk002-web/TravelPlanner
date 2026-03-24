@@ -2,13 +2,16 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import LoginPage from "./pages/login";
 import CreateUserPage from "./pages/create-user";
 import ItineraryPage from "./pages/Itinerary";
+import { Toaster } from "react-hot-toast"; 
+
 
 const App = () => {
   return (
     <Router>
+      <Toaster position="top-right" />
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950 text-slate-50">
         <header className="sticky top-0 z-10 border-b border-white/10 bg-slate-950/40 backdrop-blur">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+          <div className="flex max-w-6xl items-center justify-start px-4 py-4">
             <Link to="/" className="flex items-center gap-2 font-semibold tracking-tight">
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-white shadow-lg shadow-indigo-500/20">
                 AI
@@ -16,20 +19,6 @@ const App = () => {
               <span className="text-base sm:text-lg">Travel Planner</span>
             </Link>
 
-            {/* <nav className="flex items-center gap-2">
-              <Link
-                to="/login"
-                className="rounded-xl px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
-              >
-                Login
-              </Link>
-              <Link
-                to="/create-user"
-                className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950 shadow-sm hover:bg-slate-100"
-              >
-                Create Account
-              </Link>
-            </nav> */}
           </div>
         </header>
 
