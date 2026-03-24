@@ -3,6 +3,7 @@ import AuthSidePanel from "../components/AuthSidePanel";
 import LoginUserForm from "../components/LoginForm";
 import { useNavigate } from "react-router-dom";
 import  { toast } from "react-hot-toast";
+import { loginUser } from "../api/Api";
 
 type LoginUserInput = {
   email_id: string;
@@ -19,14 +20,9 @@ const LoginPage = () => {
     setMessage(null);
 
     try {
-      const res = await fetch("/login-user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const payload = await loginUser(data);
 
-      if (res.ok) {
-        const payload = await res.json();
+
         if (payload?.token) {
           localStorage.setItem("token", payload.token);
         }
@@ -36,12 +32,9 @@ const LoginPage = () => {
         toast.success(payload?.message || "Logged in successfully!");
         navigate("/itinerary");
         return;
-      }
 
-      const err = await res.json();
-      toast.error(err.detail || "Invalid credentials");
-    } catch {
-      toast.error("Network error!");
+  } catch (error: any) { 
+  toast.error(error?.detail || "Login failed");
     } finally {
       setLoading(false);
     }

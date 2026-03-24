@@ -25,3 +25,8 @@
 .tp-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(16, 185, 129, 0.75);
 }
+
+.scrollbar-none {
+  -ms-overflow-style: none;  
+  scrollbar-width: none;    
+}

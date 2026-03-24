@@ -5,7 +5,7 @@ from App.schema.llm_response_schema import TravelRequest, TravelResponse
 from fastapi import Depends , HTTPException
 from App.schema.itineraries_scehma import ItinerarySchema, ItineraryResponse
 from App.config.db_connection import get_db
-from App.service.itineraries_service import save_itinerary_data , update_itinerary_data , delete_itinerary_by_id , get_itinerary_by_id
+from App.service.itineraries_service import save_itinerary_data , update_itinerary_data , delete_itinerary_by_id , get_itinerary_data , get_itinerary_by_id
 from App.Model.Itineraries import Itinerary
 from sqlalchemy.orm import Session
 from fastapi.responses import StreamingResponse
@@ -19,8 +19,12 @@ from App.Model.user import User
 router = APIRouter(tags=["Travel Planner"])
 
 
-@router.get("/get-itinerary/{itinerary_id}")
-async def get_itinerary(itinerary_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+@router.get("/get-itinerary")
+async def get_itinerary(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    return get_itinerary_data(db, current_user)
+
+@router.get("/get-itinerary-id/{itinerary_id}")
+async def get_intinerary_id(itinerary_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return get_itinerary_by_id(db, itinerary_id, current_user)
 
 

@@ -13,12 +13,21 @@ type GenerateItineraryProps = {
   input: ItineraryInput;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   onSubmit: () => Promise<void>;
+  onViewHistory: () => void;
   loading: boolean;
 };
 
-const GenerateItinerary: React.FC<GenerateItineraryProps> = ({ input, onChange, onSubmit, loading }) => {
+const GenerateItinerary: React.FC<GenerateItineraryProps> = ({ input, onChange, onSubmit,onViewHistory, loading }) => {
   return (
-    <div className="mx-auto max-w-6xl">
+         <div className="mx-auto max-w-6xl relative">
+        <div className="absolute top-0 right-0 mt-4 mr-4">
+   <button
+  onClick={onViewHistory}
+  className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-500 transition"
+>
+  View Itinerary History
+</button>
+  </div>
       <header className="mx-auto max-w-4xl text-center">
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-200">AI Travel Planner</p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">

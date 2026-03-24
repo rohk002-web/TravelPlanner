@@ -7,15 +7,34 @@ from App.Model.user import User
 from App.service.authentication_service import get_current_user
 from fastapi import Depends
 
-def get_itinerary_by_id(db: Session, itinerary_id: str, user: User):
-    itinerary = db.query(Itinerary).filter(
-        Itinerary.id == itinerary_id,
-        Itinerary.user_id == user.id
-    ).first()
+def get_itinerary_data(db: Session,  user: User):
+    itineraries = (
+        db.query(Itinerary)
+        .filter(Itinerary.user_id == user.id)
+        .order_by(Itinerary.created_at.desc())
+        .all()
+    )
 
-    if not itinerary:
+    if not itineraries:
         raise HTTPException(status_code=404, detail="Itinerary not found")
 
+    return {
+        "itineraries": [
+            {
+                "id": str(itinerary.id),
+                "itinerary_data": itinerary.itinerary_data,
+            }
+            for itinerary in itineraries
+        ]
+    }
+
+def get_itinerary_by_id(db: Session, itinerary_id: str, user: User):
+    itinerary = db.query(Itinerary).filter(Itinerary.id == itinerary_id, Itinerary.user_id == user.id).first()
+    if not itinerary:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Itinerary not found."
+        )
     return {
         "id": str(itinerary.id),
         "itinerary_data": itinerary.itinerary_data

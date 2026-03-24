@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import GenerateItinerary from "../components/GenerateItinerary";
 import ItineraryModal from "../components/ItineraryModal";
-import { saveItinerary } from "../api/userapi";
+import ItineraryHistory from "../components/ItineraryHistory";
+import { saveItinerary } from "../api/Api";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import DetailedItineraryModal from "../components/DetailedItineraryModal";
 
 
 
@@ -50,6 +52,7 @@ const handleLogout = () => {
   const [loading, setLoading] = useState(false);
   const [itinerary, setItinerary] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -96,6 +99,7 @@ const handleLogout = () => {
         input={input}
         onChange={handleChange}
         onSubmit={handleSubmit}
+        onViewHistory={() => setHistoryOpen(true)}
         loading={loading}
       />
 
@@ -105,6 +109,17 @@ const handleLogout = () => {
         onSave={handleSave}
         data={itinerary}
       />
+
+      <ItineraryHistory
+          isOpen={historyOpen}
+          onClose={() => setHistoryOpen(false)}
+      />
+
+      <DetailedItineraryModal
+      isOpen={modalOpen}
+      onClose={() => setModalOpen(false)}
+      data={itinerary?.itinerary_data ?? itinerary}
+    />
     </div>
     </div>
   );
