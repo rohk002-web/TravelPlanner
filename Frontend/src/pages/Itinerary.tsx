@@ -4,14 +4,11 @@ import ItineraryModal from "../components/ItineraryModal";
 import ItineraryHistory from "../components/ItineraryHistory";
 import { saveItinerary } from "../api/Api";
 import toast from 'react-hot-toast';
-import { useNavigate } from "react-router-dom";
 import DetailedItineraryModal from "../components/DetailedItineraryModal";
 
 
 
 const ItineraryPage = () => {
-
-  const navigate = useNavigate();
 
   const [input, setInput] = useState({
     destination: "",
@@ -35,18 +32,6 @@ const handleSave = async (data: any) => {
     toast.error("Failed to save itinerary");
   }
 
-};
-
-const handleLogout = () => {
-  // Remove token and userId from localStorage
-  localStorage.removeItem("token");
-  localStorage.removeItem("user_id");
-
-  // Show toast for 2 seconds and then redirect
-  toast.success("Logged out successfully", { duration: 2000 });
-  setTimeout(() => {
-    navigate("/login");
-},2000);
 };
 
   const [loading, setLoading] = useState(false);
@@ -88,12 +73,6 @@ const handleLogout = () => {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "flex-end", padding: "1rem" }}>
-        <button onClick={handleLogout} style={{ cursor: "pointer" }}>
-          Logout
-        </button>
-      </div>
-
     <div>
       <GenerateItinerary
         input={input}

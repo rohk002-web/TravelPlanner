@@ -54,7 +54,6 @@ const ItineraryHistory: React.FC<ItineraryHistoryProps> = ({ isOpen, onClose }) 
       setHistory(data.itineraries || []);
     } catch (err) {
       console.error(err);
-      alert("Failed to fetch itinerary history.");
     }
     setLoading(false);
   };

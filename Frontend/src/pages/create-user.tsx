@@ -3,6 +3,7 @@ import AuthSidePanel from "../components/AuthSidePanel";
 import CreateUserForm from "../components/CreateUserForm";
 import{toast} from "react-hot-toast";
 import { createUser } from "../api/Api";
+import { useNavigate } from "react-router-dom";
 
 type CreateUserInput = {
   email_id: string;
@@ -14,6 +15,8 @@ const CreateUserPage = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
+  const navigate = useNavigate();
+
   const handleCreateUser = async (data: CreateUserInput) => {
     setLoading(true);
     setMessage(null);
@@ -22,6 +25,7 @@ const CreateUserPage = () => {
     const created = await createUser(data);
 
     toast.success(`User ${created.name} created successfully!`);
+    navigate("/login")
     return true;
   } catch (err: any) {
     toast.error(err.detail || "Something went wrong!");

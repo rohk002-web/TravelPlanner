@@ -24,9 +24,9 @@ const GenerateItinerary: React.FC<GenerateItineraryProps> = ({ input, onChange, 
    <button
   onClick={onViewHistory}
   className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-500 transition"
->
-  View Itinerary History
-</button>
+    >
+      View Itinerary History
+    </button>
   </div>
       <header className="mx-auto max-w-4xl text-center">
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-200">AI Travel Planner</p>

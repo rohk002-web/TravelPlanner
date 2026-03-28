@@ -70,3 +70,31 @@ export async function handleDeleteItinerary(itinerary_id: string) {
   if (!res.ok) throw await res.json();
   return res.json();
 }
+
+export const downloadItinerary = async (itineraryId: string) => {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_BASE}/download-itinerary/${itineraryId}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/pdf',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to download itinerary');
+  }
+
+  // Handle the file download
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `itinerary-${itineraryId}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+
+  return response;
+};

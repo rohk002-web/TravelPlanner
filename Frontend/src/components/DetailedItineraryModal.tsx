@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { Download , X } from "lucide-react";
+import { downloadItinerary } from "../api/Api";
 
 type DayDetails = {
   plan?: string;
@@ -57,6 +58,20 @@ const SectionCard = ({ title, content }: { title: string; content?: string }) =>
 
 const DetailedItineraryModal: React.FC<DetailedItineraryModalProps> = ({ isOpen, onClose, data }) => {
   const itinerary = data?.itinerary_data ?? data;
+  const itineraryId = data?.id;
+
+  const handleDownload = async () => {
+    if (!itineraryId) {
+      console.error("No itinerary ID found for download");
+      return;
+    }
+    try {
+      await downloadItinerary(itineraryId);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
+
   const normalizedDays = useMemo(() => normalizeDays(itinerary?.days), [itinerary]);
   const place = itinerary?.place;
   const travelStyle = itinerary?.travel_style;
@@ -94,7 +109,8 @@ const DetailedItineraryModal: React.FC<DetailedItineraryModalProps> = ({ isOpen,
 
           </div>
           <div className="flex gap-3">
-           <button className="absolute top-3 right-10 text-white hover:text-purple-400 transition-colors p-2">
+           <button className="absolute top-3 right-10 text-white hover:text-purple-400 transition-colors p-2"
+            onClick={handleDownload}>
             <Download size={20} />
             </button>
               
