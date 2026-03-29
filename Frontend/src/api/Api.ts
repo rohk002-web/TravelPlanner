@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8000";
+const API_BASE = import.meta.env.VITE_API_BASE;;
 
 export async function createUser(data: { email_id: string; password: string; name: string }) {
   const res = await fetch(`${API_BASE}/create-users`, {
