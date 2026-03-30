@@ -18,7 +18,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://travelplanner-frontend.onrender.com"
+        "https://travelplanner-1-jwkd.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
