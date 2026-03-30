@@ -10,4 +10,5 @@ argon2-cffi
 google-generativeai
 reportlab
 PyJWT
+gunicorn
 

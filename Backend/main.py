@@ -3,7 +3,16 @@ from App.routers import user_router , travel_planner_router
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
+from App.config.db_connection import engine
+from App.Model.user import Base
+from App.Model.Itineraries import Itinerary
+
 app = FastAPI()
+
+
+@app.on_event("startup")
+def _create_tables() -> None:
+    Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
