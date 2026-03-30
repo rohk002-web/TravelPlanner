@@ -20,6 +20,20 @@ export async function loginUser(data: { email_id: string; password: string }) {
   return res.json();
 }
 
+export async function generateTravelPlan(data: any) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_BASE}/travel-plan`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw await res.json();
+  return res.json();
+}
+
 export async function saveItinerary(data: any) {
   const token = localStorage.getItem("token"); 
 
@@ -35,7 +49,6 @@ export async function saveItinerary(data: any) {
   if (!res.ok) throw await res.json();
   return res.json();
 }
-
 
 export async function getItineraryHistory() {
   const token = localStorage.getItem("token");

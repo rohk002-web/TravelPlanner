@@ -64,7 +64,7 @@ const AppLayout = () => {
 
                   <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
                     Plan smarter trips with an
-                    <span className="bg-gradient-to-r from-indigo-400 to-fuchsia-400 bg-clip-text text-transparent ml-20"> AI Travel Planner</span>
+                    <span className="bg-gradient-to-r from-indigo-400 to-fuchsia-400 bg-clip-text text-transparent ml-15"> AI Travel Planner</span>
                   </h1>
 
                   <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-200">

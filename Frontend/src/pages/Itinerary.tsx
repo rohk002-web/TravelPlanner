@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import GenerateItinerary from "../components/GenerateItinerary";
 import ItineraryModal from "../components/ItineraryModal";
 import ItineraryHistory from "../components/ItineraryHistory";
-import { saveItinerary } from "../api/Api";
+import { generateTravelPlan, saveItinerary } from "../api/Api";
 import toast from 'react-hot-toast';
 
 const ItineraryPage = () => {
@@ -47,16 +47,14 @@ const ItineraryPage = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token"); 
-      const response = await fetch("/travel-plan", {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, 
-      },
-      body: JSON.stringify(input),
-    });
-      const data = await response.json();
+      const data = await generateTravelPlan({
+        destination: input.destination,
+        travel_style: input.travel_style,
+        no_of_persons: Number(input.no_of_persons),
+        days: Number(input.days),
+        budget_min: Number(input.budget_min),
+        budget_max: Number(input.budget_max),
+      });
       setItinerary(data.itinerary);
       setModalOpen(true);
     } catch (err) {
