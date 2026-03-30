@@ -4,9 +4,6 @@ import ItineraryModal from "../components/ItineraryModal";
 import ItineraryHistory from "../components/ItineraryHistory";
 import { saveItinerary } from "../api/Api";
 import toast from 'react-hot-toast';
-import DetailedItineraryModal from "../components/DetailedItineraryModal";
-
-
 
 const ItineraryPage = () => {
 
@@ -19,20 +16,18 @@ const ItineraryPage = () => {
     budget_max: "",
   });
 
-const handleSave = async (data: any) => {
-  try {
-    const response = await saveItinerary(data); 
-    toast.success(response.message);
+  const handleSave = async (data: any) => {
+    try {
+      const response = await saveItinerary(data); 
+      toast.success(response.message);
       setTimeout(() => {
-      setModalOpen(false);
-    }, 1000);
-    
-  } catch (err) {
-    console.error(err);
-    toast.error("Failed to save itinerary");
-  }
-
-};
+        setModalOpen(false);
+      }, 1000);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to save itinerary");
+    }
+  };
 
   const [loading, setLoading] = useState(false);
   const [itinerary, setItinerary] = useState<any>(null);
@@ -73,33 +68,27 @@ const handleSave = async (data: any) => {
 
   return (
     <div>
-    <div>
-      <GenerateItinerary
-        input={input}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        onViewHistory={() => setHistoryOpen(true)}
-        loading={loading}
-      />
+      <div>
+        <GenerateItinerary
+          input={input}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          onViewHistory={() => setHistoryOpen(true)}
+          loading={loading}
+        />
 
-      <ItineraryModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSave={handleSave}
-        data={itinerary}
-      />
+        <ItineraryModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onSave={handleSave}
+          data={itinerary}
+        />
 
-      <ItineraryHistory
+        <ItineraryHistory
           isOpen={historyOpen}
           onClose={() => setHistoryOpen(false)}
-      />
-
-      <DetailedItineraryModal
-      isOpen={modalOpen}
-      onClose={() => setModalOpen(false)}
-      data={itinerary?.itinerary_data ?? itinerary}
-    />
-    </div>
+        />
+      </div>
     </div>
   );
 };
