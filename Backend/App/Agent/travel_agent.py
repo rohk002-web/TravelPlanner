@@ -42,7 +42,7 @@ async def generate_travel_plan(data):
     # Parse as JSON
     try:
         itinerary = json.loads(text)
-        await redis_client.set(cache_key, json.dumps(itinerary), ex=3600)
+        await redis_client.set(cache_key, json.dumps(itinerary))
         return itinerary
     except json.JSONDecodeError:
         # If parsing fails, return the cleaned text as error
